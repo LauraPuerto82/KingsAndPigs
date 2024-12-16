@@ -7,6 +7,7 @@ public class PlayerController : MonoBehaviour
     private Transform m_transform;
 
     [SerializeField] private float speed;
+    private int direction = 1;
 
     private void Awake()
     {
@@ -15,8 +16,23 @@ public class PlayerController : MonoBehaviour
         m_transform = GetComponent<Transform>();
     }    
     
-    void FixedUpdate()
+    private void FixedUpdate()
     {
+        Move();
+    }
+
+    private void Move()
+    {
+        Flip();
         m_rigidbody2D.linearVelocity = new Vector2(m_gatherInput.ValueX * speed, m_rigidbody2D.linearVelocityY);
+    }
+
+    private void Flip()
+    {
+        if(m_gatherInput.ValueX * direction < 0)
+        {
+            m_transform.localScale = new Vector3(-m_transform.localScale.x, 1, 1);
+            direction *= -1;
+        }
     }
 }
