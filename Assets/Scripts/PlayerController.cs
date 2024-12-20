@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     // Values
     [SerializeField] private float speed;
+    [SerializeField] private float jumpForce;
     private int direction = 1;
 
     // Animator values
@@ -36,12 +37,16 @@ public class PlayerController : MonoBehaviour
     private void FixedUpdate()
     {
         Move();
+        Jump();
     }
 
     private void Move()
     {
         Flip();
-        m_rigidbody2D.linearVelocity = new Vector2(m_gatherInput.ValueX * speed, m_rigidbody2D.linearVelocityY);
+
+        float x = m_gatherInput.ValueX * speed;
+        float y = m_rigidbody2D.linearVelocityY;
+        m_rigidbody2D.linearVelocity = new Vector2(x, y);
     }
 
     private void Flip()
@@ -50,6 +55,17 @@ public class PlayerController : MonoBehaviour
         {
             m_transform.localScale = new Vector3(-m_transform.localScale.x, 1, 1);
             direction *= -1;
+        }
+    }
+
+    private void Jump()
+    {
+        if(m_gatherInput.IsJumping)
+        {
+            float x = speed * m_gatherInput.ValueX;
+            float y = jumpForce;
+            m_rigidbody2D.linearVelocity = new Vector2(x, y);
+            m_gatherInput.IsJumping = false;
         }
     }
 }

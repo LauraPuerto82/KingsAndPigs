@@ -6,7 +6,10 @@ public class GatherInput : MonoBehaviour
     private Controls controls;
     private float _valueX;
 
-    public float ValueX { get => _valueX; }
+    public float ValueX { get => _valueX; }    
+
+    private bool _isJumping;
+    public bool IsJumping { get => _isJumping; set => _isJumping = value; }
 
     private void Awake()
     {
@@ -17,6 +20,10 @@ public class GatherInput : MonoBehaviour
     {
         controls.Player.Move.performed += StartMove;
         controls.Player.Move.canceled += StopMove;
+
+        controls.Player.Jump.performed += StartJump;
+        controls.Player.Jump.canceled += StopJump;
+
         controls.Player.Enable();
     }
 
@@ -30,10 +37,24 @@ public class GatherInput : MonoBehaviour
         _valueX = 0;
     }
 
+    private void StartJump(InputAction.CallbackContext context)
+    {
+        _isJumping = true;
+    }
+
+    private void StopJump(InputAction.CallbackContext context)
+    {
+        _isJumping = false;
+    }
+
     private void OnDisable()
     {
         controls.Player.Move.performed -= StartMove;
         controls.Player.Move.canceled -= StopMove;
+
+        controls.Player.Jump.performed -= StartJump;
+        controls.Player.Jump.canceled -= StopJump;
+
         controls?.Player.Disable();
     }
 }
