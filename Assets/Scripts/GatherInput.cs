@@ -6,7 +6,7 @@ public class GatherInput : MonoBehaviour
     private Controls controls;
     private float _valueX;
 
-    public float ValueX { get => _valueX; }    
+    public float ValueX { get => _valueX; }
 
     private bool _isJumping;
     public bool IsJumping { get => _isJumping; set => _isJumping = value; }
@@ -29,7 +29,7 @@ public class GatherInput : MonoBehaviour
 
     private void StartMove(InputAction.CallbackContext context)
     {
-        _valueX = context.ReadValue<float>();
+        _valueX = Mathf.RoundToInt(context.ReadValue<float>());
     }
 
     private void StopMove(InputAction.CallbackContext context)
